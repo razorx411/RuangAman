@@ -36,7 +36,8 @@ android {
         jvmTarget = "11"
     }
 
-    buildFeatures{viewBinding = true}
+    buildFeatures{
+        viewBinding = true}
 }
 
 dependencies {
@@ -47,8 +48,13 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.9.7")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
 }
+

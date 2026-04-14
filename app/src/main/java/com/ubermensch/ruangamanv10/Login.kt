@@ -1,31 +1,40 @@
 package com.ubermensch.ruangamanv10
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.widget.Toast
+import androidx.activity.viewModels
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
+    // Jika nama file XML-nya fragment_login.xml, maka Binding-nya adalah FragmentLoginBinding
+    private lateinit var binding: FragmentLoginBinding
     private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = FragmentLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString()
-            viewModel.login(email, password)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                viewModel.login(email, password)
+            } else {
+                Toast.makeText(this, "Isi email dan password", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        binding.tvDaftar.setOnClickListener {
+        // SESUAIKAN ID: dari tvDaftar menjadi btnKeDaftar
+        binding.btnKeDaftar.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
+            // SESUAIKAN ID: dari tvDaftar menjadi btnKeDaftar
+            binding.btnKeDaftar.setOnClickListener {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            }
 
         viewModel.loginResult.observe(this) { result ->
             when (result) {
