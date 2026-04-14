@@ -1,55 +1,76 @@
 package com.ubermensch.ruangamanv10
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Register.newInstance] factory method to
- * create an instance of this fragment.
- */
-class Register : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class RegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnBack.setOnClickListener { finish() }
+
+        binding.btnDaftar.setOnClickListener { prosesDaftar() }
+
+        binding.tvKeLogin.setOnClickListener { finish() }
+    }
+
+    private fun prosesDaftar() {
+        val nama      = binding.etNama.text.toString().trim()
+        val nik       = binding.etNik.text.toString().trim()
+        val email     = binding.etEmailRegister.text.toString().trim()
+        val noHp      = binding.etNoHp.text.toString().trim()
+        val password  = binding.etPasswordRegister.text.toString()
+        val konfirmasi = binding.etKonfirmasiPassword.text.toString()
+
+        // Reset semua error
+        binding.tilNama.error              = null
+        binding.tilNik.error               = null
+        binding.tilEmailRegister.error     = null
+        binding.tilNoHp.error              = null
+        binding.tilPasswordRegister.error  = null
+        binding.tilKonfirmasiPassword.error = null
+
+        // Validasi satu per satu
+        if (nama.isEmpty()) {
+            binding.tilNama.error = "Nama tidak boleh kosong"; return
         }
-    }
+        if (nik.length != 16) {
+            binding.tilNik.error = "NIK harus 16 digit"; return
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.tilEmailRegister.error = "Format email tidak valid"; return
+        }
+        if (noHp.length < 9) {
+            binding.tilNoHp.error = "Nomor HP tidak valid"; return
+        }
+        if (password.length < 8) {
+            binding.tilPasswordRegister.error = "Kata sandi minimal 8 karakter"; return
+        }
+        if (password != konfirmasi) {
+            binding.tilKonfirmasiPassword.error = "Kata sandi tidak cocok"; return
+        }
+        if (!binding.cbSyarat.isChecked) {
+            Toast.makeText(this, "Harap setujui syarat dan ketentuan", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
-    }
+        // Simpan sementara di SharedPreferences
+        val prefs = getSharedPreferences("ruangaman_users", MODE_PRIVATE)
+        prefs.edit()
+            .putString("user_email_$email", password)
+            .putString("user_nama_$email",  nama)
+            .apply()
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Register.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic fun newInstance(param1: String, param2: String) =
-                Register().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+        Toast.makeText(this, "Registrasi berhasil! Silakan login.", Toast.LENGTH_LONG).show()
+        finish() // Kembali ke halaman login
     }
 }
