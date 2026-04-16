@@ -1,6 +1,5 @@
 package com.ubermensch.ruangamanv10
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 class EducationDetailFragment : Fragment() {
 
@@ -33,12 +33,7 @@ class EducationDetailFragment : Fragment() {
         tvDetailDate = view.findViewById(R.id.tvDetailDate)
         tvDetailContent = view.findViewById(R.id.tvDetailContent)
 
-        val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable("education_data", EducationItem::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getSerializable("education_data") as? EducationItem
-        }
+        val data = arguments?.getSerializable("education_data") as? EducationItem
 
         data?.let {
             tvDetailTitle.text = it.title
@@ -48,7 +43,7 @@ class EducationDetailFragment : Fragment() {
         }
 
         btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
     }
 }

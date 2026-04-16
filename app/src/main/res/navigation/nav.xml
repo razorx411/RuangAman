@@ -21,11 +21,23 @@
         android:id="@+id/nav_education"
         android:name="com.ubermensch.ruangamanv10.EducationBlog"
         android:label="Edukasi"
-        tools:layout="@layout/fragment_education_blog" />
+        tools:layout="@layout/fragment_education_blog">
+
+        <action
+            android:id="@+id/action_nav_education_to_educationDetailFragment"
+            app:destination="@id/educationDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/educationDetailFragment"
+        android:name="com.ubermensch.ruangamanv10.EducationDetailFragment"
+        android:label="Detail Edukasi"
+        tools:layout="@layout/fragment_education_detail" />
 
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.ubermensch.ruangamanv10.Profile"
         android:label="Profil"
         tools:layout="@layout/fragment_profile" />
+
 </navigation>

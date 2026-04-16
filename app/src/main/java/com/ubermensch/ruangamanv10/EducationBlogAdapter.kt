@@ -1,7 +1,5 @@
 package com.ubermensch.ruangamanv10
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,8 @@ class EducationBlogAdapter(
     private val onItemClick: (EducationItem) -> Unit
 ) : RecyclerView.Adapter<EducationBlogAdapter.EducationViewHolder>() {
 
-    class EducationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class EducationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         val tvTitle: TextView = itemView.findViewById(R.id.tvItemTitle)
         val tvShortDesc: TextView = itemView.findViewById(R.id.tvItemShortDesc)
         val tvAuthor: TextView = itemView.findViewById(R.id.tvItemAuthor)
@@ -29,6 +28,7 @@ class EducationBlogAdapter(
     override fun onBindViewHolder(holder: EducationViewHolder, position: Int) {
         val item = educationList[position]
 
+
         holder.tvTitle.text = item.title
         holder.tvShortDesc.text = item.shortDescription
         holder.tvAuthor.text = item.author
@@ -41,4 +41,3 @@ class EducationBlogAdapter(
 
     override fun getItemCount(): Int = educationList.size
 }
-

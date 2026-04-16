@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
+    android:id="@+id/educationDetailFragment"
     card_view:cardCornerRadius="16dp"
     card_view:cardElevation="4dp"
     card_view:cardUseCompatPadding="true">
+
 
     <LinearLayout
         android:layout_width="match_parent"
