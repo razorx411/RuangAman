@@ -24,21 +24,25 @@ class HomePage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val drawerLayout = view.findViewById<DrawerLayout>(R.id.drawer_layout)
+        // Ambil DrawerLayout dari MainActivity
+        val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawerLayout)
         val btnHamburger = view.findViewById<ImageView>(R.id.btn_hamburger)
         val cardLapor = view.findViewById<MaterialCardView>(R.id.card_lapor_bully)
         val tvSeeAll = view.findViewById<TextView>(R.id.tv_see_all)
 
         btnHamburger.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+            // Membuka drawer yang ada di MainActivity
+            drawerLayout?.openDrawer(GravityCompat.START)
         }
 
         cardLapor.setOnClickListener {
-            findNavController().navigate(R.id.nav_report)
+            // Menggunakan Action ID yang baru dibuat di nav.xml
+            findNavController().navigate(R.id.action_nav_home_to_nav_report)
         }
 
         tvSeeAll.setOnClickListener {
-            findNavController().navigate(R.id.nav_education)
+            // Menggunakan Action ID yang baru dibuat di nav.xml
+            findNavController().navigate(R.id.action_nav_home_to_nav_education)
         }
     }
 }

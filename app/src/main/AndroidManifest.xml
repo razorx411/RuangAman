@@ -26,7 +26,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="true" /> <!-- Diubah menjadi true agar bisa di-run langsung dari IDE -->
 
     </application>
 

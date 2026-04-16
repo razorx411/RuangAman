@@ -17,6 +17,9 @@ class LoginActivity : AppCompatActivity() {
         binding = FragmentLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Sembunyikan ActionBar bawaan agar tampilan lebih bersih
+        supportActionBar?.hide()
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString()
@@ -36,7 +39,6 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginResult.observe(this) { result ->
             when (result) {
                 is LoginResult.Success -> {
-                    // Berpindah ke MainActivity yang menampung HomePage
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()

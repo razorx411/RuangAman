@@ -9,7 +9,14 @@
         android:id="@+id/nav_home"
         android:name="com.ubermensch.ruangamanv10.HomePage"
         android:label="Home"
-        tools:layout="@layout/fragment_home_page" />
+        tools:layout="@layout/fragment_home_page">
+        <action
+            android:id="@+id/action_nav_home_to_nav_report"
+            app:destination="@id/nav_report" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_education"
+            app:destination="@id/nav_education" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_report"

@@ -2,8 +2,7 @@ package com.ubermensch.ruangamanv10
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.ubermensch.ruangamanv10.databinding.ActivityMainBinding
 
@@ -16,7 +15,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        // Sembunyikan ActionBar bawaan
+        supportActionBar?.hide()
+
+        // Mengambil NavController dengan aman
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        
+        // Hubungkan NavigationView dengan NavController
         binding.navView.setupWithNavController(navController)
     }
 }
