@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,65 +13,70 @@ class EducationBlog : Fragment() {
 
     private lateinit var rvEducationBlog: RecyclerView
     private lateinit var adapter: EducationBlogAdapter
-    private lateinit var educationList: ArrayList<EducationItem>
+    private val educationList = arrayListOf<EducationItem>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_education_blog, container, false)
-    }
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            return inflater.inflate(R.layout.fragment_education_blog, container, false)
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         rvEducationBlog = view.findViewById(R.id.rvEducationBlog)
         rvEducationBlog.layoutManager = LinearLayoutManager(requireContext())
+        rvEducationBlog.setHasFixedSize(true)
 
-        educationList = arrayListOf(
-            EducationItem(
-                "Apa itu bullying?",
-                "Bullying adalah perilaku agresif yang dilakukan berulang kali untuk menyakiti orang lain.",
-                "Bullying adalah tindakan menyakiti, mengintimidasi, atau merendahkan seseorang secara sengaja dan berulang. Bentuk bullying bisa berupa fisik, verbal, sosial, maupun cyberbullying. Dampaknya sangat besar bagi korban, mulai dari menurunnya rasa percaya diri hingga gangguan kesehatan mental.",
-                "Admin Ruang Aman",
-                "14 April 2026"
-            ),
-            EducationItem(
-                "Jenis-jenis bullying",
-                "Bullying tidak hanya berupa kekerasan fisik, tetapi juga verbal, sosial, dan online.",
-                "Jenis bullying terdiri dari bullying fisik seperti memukul atau mendorong, bullying verbal seperti mengejek atau menghina, bullying sosial seperti mengucilkan teman, dan cyberbullying yang dilakukan melalui media sosial atau pesan online.",
-                "Admin Ruang Aman",
-                "14 April 2026"
-            ),
-            EducationItem(
-                "Cara melaporkan bullying",
-                "Korban atau saksi bullying sebaiknya segera melapor kepada pihak terpercaya.",
-                "Jika kamu mengalami atau menyaksikan bullying, segera catat kejadian yang terjadi, simpan bukti bila ada, lalu laporkan kepada guru, orang tua, konselor, atau melalui aplikasi pelaporan bullying. Melapor adalah langkah penting untuk menghentikan tindakan tersebut.",
-                "Admin Ruang Aman",
-                "14 April 2026"
-            ),
-            EducationItem(
-                "Dampak bullying bagi korban",
-                "Bullying dapat memengaruhi kesehatan mental, emosional, and akademik korban.",
-                "Korban bullying dapat mengalami rasa takut, cemas, depresi, sulit berkonsentrasi, hingga menurunnya prestasi belajar. Oleh karena itu, penting untuk memberi dukungan dan menciptakan lingkungan yang aman bagi semua orang.",
-                "Admin Ruang Aman",
-                "14 April 2026"
-            )
-        )
+        loadDummyData()
 
         adapter = EducationBlogAdapter(educationList) { selectedItem ->
-            val detailFragment = EducationDetailFragment()
-
             val bundle = Bundle()
             bundle.putSerializable("education_data", selectedItem)
-            detailFragment.arguments = bundle
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, detailFragment)
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(
+                R.id.action_nav_education_to_educationDetailFragment,
+                bundle
+            )
         }
 
         rvEducationBlog.adapter = adapter
+    }
+
+    private fun loadDummyData() {
+        educationList.clear()
+        educationList.addAll(
+            listOf(
+                EducationItem(
+                    title = "Apa itu bullying?",
+                    shortDescription = "Bullying adalah perilaku agresif yang dilakukan berulang kali untuk menyakiti orang lain.",
+                    content = "Bullying adalah tindakan menyakiti, mengintimidasi, atau merendahkan seseorang secara sengaja dan berulang. Bentuk bullying bisa berupa fisik, verbal, sosial, maupun cyberbullying.",
+                    author = "Admin Ruang Aman",
+                    date = "14 April 2026"
+                ),
+                EducationItem(
+                    title = "Jenis-jenis bullying",
+                    shortDescription = "Bullying bisa berbentuk fisik, verbal, sosial, dan cyberbullying.",
+                    content = "Jenis bullying terdiri dari bullying fisik seperti memukul atau mendorong, bullying verbal seperti mengejek atau menghina, bullying sosial seperti mengucilkan teman, dan cyberbullying melalui media sosial.",
+                    author = "Admin Ruang Aman",
+                    date = "14 April 2026"
+                ),
+                EducationItem(
+                    title = "Cara melaporkan bullying",
+                    shortDescription = "Korban atau saksi bullying sebaiknya segera melapor kepada pihak terpercaya.",
+                    content = "Jika kamu mengalami atau menyaksikan bullying, catat kejadian, simpan bukti bila ada, lalu laporkan kepada guru, orang tua, konselor, atau pihak sekolah.",
+                    author = "Admin Ruang Aman",
+                    date = "14 April 2026"
+                ),
+                EducationItem(
+                    title = "Dampak bullying bagi korban",
+                    shortDescription = "Bullying dapat memengaruhi kesehatan mental, emosional, dan akademik korban.",
+                    content = "Korban bullying dapat mengalami rasa takut, cemas, depresi, sulit berkonsentrasi, hingga menurunnya prestasi belajar. Dukungan lingkungan sangat penting.",
+                    author = "Admin Ruang Aman",
+                    date = "14 April 2026"
+                )
+            )
+        )
     }
 }
