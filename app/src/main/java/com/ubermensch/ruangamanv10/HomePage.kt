@@ -1,48 +1,38 @@
 package com.ubermensch.ruangamanv10
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.card.MaterialCardView
+import com.ubermensch.ruangamanv10.databinding.FragmentHomePageBinding
+import androidx.navigation.Navigation
 
 class HomePage : Fragment() {
+    private var _binding: FragmentHomePageBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home_page, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentHomePageBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ambil DrawerLayout dari MainActivity
-        val drawerLayout = requireActivity().findViewById<DrawerLayout>(R.id.drawerLayout)
-        val btnHamburger = view.findViewById<ImageView>(R.id.btn_hamburger)
-        val cardLapor = view.findViewById<MaterialCardView>(R.id.card_lapor_bully)
-        val tvSeeAll = view.findViewById<TextView>(R.id.tv_see_all)
+        // Load nama dari SharedPreferences
+        val sharedPref = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val savedName = sharedPref.getString("user_name", "User")
+        binding.tvUserName.text = savedName
 
-        btnHamburger.setOnClickListener {
-            // Membuka drawer yang ada di MainActivity
-            drawerLayout?.openDrawer(GravityCompat.START)
-        }
+        // Hubungkan tombol ke Action di nav.xml
+        binding.cardLaporBully.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_nav_home_to_nav_report))
+        binding.tvSeeAll.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_nav_home_to_nav_education))
+    }
 
-        cardLapor.setOnClickListener {
-            // Menggunakan Action ID yang baru dibuat di nav.xml
-            findNavController().navigate(R.id.action_nav_home_to_nav_report)
-        }
-
-        tvSeeAll.setOnClickListener {
-            // Menggunakan Action ID yang baru dibuat di nav.xml
-            findNavController().navigate(R.id.action_nav_home_to_nav_education)
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

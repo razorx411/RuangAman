@@ -1,72 +1,52 @@
 package com.ubermensch.ruangamanv10
 
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.ubermensch.ruangamanv10.databinding.FragmentRegisterBinding
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterFragment : Fragment() {
 
-    private lateinit var binding: FragmentRegisterBinding
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = FragmentRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.btnBack.setOnClickListener { finish() }
-
-        binding.btnDaftar.setOnClickListener { prosesDaftar() }
-
-        binding.tvKeLogin.setOnClickListener { finish() }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private fun prosesDaftar() {
-        val nama       = binding.etNama.text.toString().trim()
-        val nik        = binding.etNik.text.toString().trim()
-        val email      = binding.etEmailRegister.text.toString().trim()
-        val noHp       = binding.etNoHp.text.toString().trim()
-        val password   = binding.etPasswordRegister.text.toString()
-        val konfirmasi = binding.etKonfirmasiPassword.text.toString()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.tilNama.error              = null
-        binding.tilNik.error               = null
-        binding.tilEmailRegister.error     = null
-        binding.tilNoHp.error              = null
-        binding.tilPasswordRegister.error  = null
-        binding.tilKonfirmasiPassword.error = null
+        // Kembali ke Login via XML Action (ID disesuaikan dengan fragment_register.xml)
+        binding.tvKeLogin.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.action_nav_register_to_nav_login)
+        )
+        
+        binding.btnBack.setOnClickListener(
+            Navigation.createNavigateOnClickListener(R.id.action_nav_register_to_nav_login)
+        )
 
-        if (nama.isEmpty()) {
-            binding.tilNama.error = "Nama tidak boleh kosong"; return
+        binding.btnDaftar.setOnClickListener {
+            // Logika pendaftaran simpel
+            if (binding.etEmailRegister.text?.isNotBlank() == true) {
+                // Setelah daftar, arahkan kembali ke Login
+                findNavController().navigate(R.id.action_nav_register_to_nav_login)
+            } else {
+                binding.etEmailRegister.error = "Email tidak boleh kosong"
+            }
         }
-        if (nik.length != 16) {
-            binding.tilNik.error = "NIK harus 16 digit"; return
-        }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.tilEmailRegister.error = "Format email tidak valid"; return
-        }
-        if (noHp.length < 9) {
-            binding.tilNoHp.error = "Nomor HP tidak valid"; return
-        }
-        if (password.length < 8) {
-            binding.tilPasswordRegister.error = "Kata sandi minimal 8 karakter"; return
-        }
-        if (password != konfirmasi) {
-            binding.tilKonfirmasiPassword.error = "Kata sandi tidak cocok"; return
-        }
-        if (!binding.cbSyarat.isChecked) {
-            Toast.makeText(this, "Harap setujui syarat dan ketentuan", Toast.LENGTH_SHORT).show()
-            return
-        }
+    }
 
-        val prefs = getSharedPreferences("ruangaman_users", MODE_PRIVATE)
-        prefs.edit()
-            .putString("user_email_$email", password)
-            .putString("user_nama_$email",  nama)
-            .apply()
-
-        Toast.makeText(this, "Registrasi berhasil! Silakan login.", Toast.LENGTH_LONG).show()
-        finish()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -9,31 +9,7 @@
     android:background="#F7FBFD"
     tools:context=".HomePage">
 
-    <!-- Custom Toolbar with Hamburger -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:paddingHorizontal="16dp"
-        android:background="@color/white"
-        android:elevation="4dp">
-
-        <ImageView
-            android:id="@+id/btn_hamburger"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            app:tint="#43b6e8" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Ruang Aman"
-            android:textColor="#43b6e8"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <!-- Removed manual Toolbar as it is now in MainActivity -->
 
     <ScrollView
         android:layout_width="match_parent"

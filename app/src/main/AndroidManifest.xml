@@ -12,7 +12,7 @@
         android:theme="@style/Theme.RuangAmanV10">
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +21,8 @@
         </activity>
 
         <activity
-            android:name=".RegisterActivity"
+            android:name=".FormPendataanActivity"
             android:exported="false" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" /> <!-- Diubah menjadi true agar bisa di-run langsung dari IDE -->
 
     </application>
 
